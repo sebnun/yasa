@@ -1,4 +1,4 @@
-import { SearchResponse } from '@/types';
+import { SearchResponse, ShowResponse } from '@/types';
 import { useState, useEffect } from 'react';
 import useSWR from 'swr';
 
@@ -30,6 +30,15 @@ export const useSearch = (query: string) => {
     const debouncedSearch = useDebounce(query, 200);
     const { data, error, isLoading } = useSWR<SearchResponse[], Error>(
         `/api/v1/search?q=${debouncedSearch}`,
+        fetcher
+    );
+
+    return { data, error, isLoading };
+};
+
+export const useShow = (id: string) => {
+    const { data, error, isLoading } = useSWR<ShowResponse, Error>(
+        `/api/v1/show?id=${id}`,
         fetcher
     );
 
